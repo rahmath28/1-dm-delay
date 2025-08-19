@@ -13,29 +13,34 @@ const Form = () => {
     const [delay,setDelay] = useState<number>(0); // this state is for : input delay ku na get pandra  numbers store panna.
     const [isSending, setIsSending] = useState<boolean>(false) // this state is for : message sent or not, initially not : reason nothing send.
     const [timerId, setTimerId] = useState<NodeJS.Timeout | null>(null); // this state is for :  settimeout function works or not , 
-    // created a settimeout function in  id variable, 
+    // created a settimeout function in  id variable, just for to delete the timeout before it ends ,
+    // so to track that have a state here..
+     
     // settimeout function nadantha timerId state la  update pandren.. 
-    const [sendMessage, SetSendMessage]= useState<string>("") // finally send agura message..
-    const [deletedmessage , setDeletedMessage] = useState<string>("")
+    const [sendMessage, SetSendMessage]= useState<string>("") // finally fill agura text state ah intha state vachu display pandrom..
+    const [deletedmessage , setDeletedMessage] = useState<string>("") //  // delete pandra message ah yum display pannanum so , having deleted message state..
 
   // handle submit
    const handleSubmit = () => {
      //sending message , so true the state 
   setIsSending(true);
 
-     // next delay set pannanum
+  // message send in delay.. : using setimeout..
+  //***  */ just created a setimeout function in a id variable and upated it it runs na , state la update pandrom..
+
   const id = setTimeout(() => {
-    SetSendMessage(text);
-    setText("");
+    SetSendMessage(text); // handle submit nadakkumpothu sending the text state.., so i can get it..
+    setText(""); // after that empty the states of text and delay..
     setDelay(0);
     
     // SetSendMessage use panni message send panniyachuna submit pannumbothu , setIsSending false pandrom.
     setIsSending(false);
 
-    // hide the sent message after 5 seconds
+    //concept : send panna message display agite irukka kudathu , so remove that send message after some seconds..
     setTimeout(() => {
       SetSendMessage("");
     }, 5000);
+
   }, delay * 1000);
     //  delay number ah get panni , 1000 milliseconds oda multiply panni,
     //  message send panndrom , send panna aprm mesage state ah empty,
@@ -43,7 +48,8 @@ const Form = () => {
     // antha settimeout function ah id dra variable la create panni timerIs state la pass pandrom , 
     // antha id variable than message send pannuthu , after a delay
 
-  setTimerId(id);
+  setTimerId(id); //***  */ just created a setimeout function in a id variable and upated it it runs na , state la update pandrom..
+  // eppolam setimeout function nadakkutho appolam , timerid dra state la update agum , becasue id dra variable la setimeout function irukku atha vachu  statela update panneerukkom..
 };
 
 
@@ -51,20 +57,28 @@ const Form = () => {
 //    cancel message
 // cancel message
 const handleCancel = () => {
-  if (timerId) clearTimeout(timerId);
+  
+  // timerId : means ennoda delay kuduthu submit pannumpothu setimout function ah id dra variable la  run aguratha , 
+  // timerId dra state la update pannom , setimeout run ana timerid state la update agum..
+
+  // settimeout function run ana , timerId state la update agum , athan logic
+  // if state la update ana , clearTimeout function use panni antha state ah remove panndrom..
+
+  if (timerId) clearTimeout(timerId); // clear that timmeout state by cleartimeout.
   setIsSending(false);
 
-  // set deleted message
+  // delete pandra message ah yum display pannanum so , having deleted message state..
   setDeletedMessage(text);
 
   // clear input and delay
   setText("");
   setDelay(0);
 
-  // hide the deleted message after 2 seconds
+  //concept : deleted message display agite irukka kudathu , so deleteing after some seconds..
   setTimeout(() => {
     setDeletedMessage("");
   }, 5000);
+
 };
 
 
@@ -87,9 +101,11 @@ const handleCancel = () => {
        
        {/* isSending :  na initially false , ( !isSending ) >> not isSending  na true  */}
        {/* !isSending : means true , apo submit pannanum , so handle click button..*/}
-       {/* isSending : which means false , na habdle cancel */}
+       {/* handle submit nadakkum pothu isSending true..*/}
+
+       {/* isending state ah porithu in button display logic */}
         {!isSending ?  <Button className="w-full" onClick={handleSubmit}>  Send with delay </Button>
-        :  <Button className="w-full" variant="destructive" onClick={handleCancel}> Cancel message</Button> }
+        :  <Button className="w-full" variant="destructive" onClick={handleCancel}> delete message</Button> }
 
         {/* {sendMessage} : got message  */}
 
